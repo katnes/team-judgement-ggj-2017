@@ -9,6 +9,8 @@ public class RatingSlider : MonoBehaviour {
 	public Text ratingText;
 	public Text countdownText;
 	public Image fillImg;
+	public Kingdom kingdom;
+	public Prisoner prisoner;
 
 	public int count = 0;
 	public float remainingTime = 10.0f;
@@ -22,13 +24,24 @@ public class RatingSlider : MonoBehaviour {
 	void Start () {
 		ratingText.text = "";
 		fillImg.color = middleColor;
+		ratingSlider.value = kingdom.popularity / 100.0f;
+
 	}
-	
+
+	void shiftPopularity(int popShift) {
+		kingdom.popularity += popShift;
+		ratingSlider.value = kingdom.popularity / 100.0f;
+		string prefix = "";
+		if (popShift > 0)
+			prefix = "+";
+		ratingText.text = prefix + popShift;
+	}
+
 	// Update is called once per frame
 	void Update () {
 
 		// Countdown timer
-		remainingTime -= Time.smoothDeltaTime;
+		remainingTime -= Time.deltaTime;
 		int remainingSeconds = Mathf.CeilToInt (remainingTime);
 		if (remainingSeconds < 0)
 			remainingSeconds = 0;
@@ -40,22 +53,14 @@ public class RatingSlider : MonoBehaviour {
 		// Change slider based on key presses
 		if(Input.GetKeyDown(KeyCode.D)){
 			//run kill code
-			ratingSlider.value -= 0.25f;
-			ratingText.text = "-25";
+			shiftPopularity(prisoner.calcKillPopularityShift());
 			stopCountdown = true;
 		}
 		if (Input.GetKeyDown(KeyCode.A)) {
 			//run let live code
-			ratingSlider.value += 0.25f;
-			ratingText.text = "+25";
+			shiftPopularity(prisoner.calcSparePopularityShift());
 			stopCountdown = true;
 		}
-
-		/*
-		GameObject fillAreaObj = ratingSlider.transform.Find("Fill Area").gameObject;
-		GameObject fillObj = fillAreaObj.transform.Find("Fill").gameObject;
-		Image fillImg = fillObj.GetComponentInChildren(typeof(Image)) as Image;
-		*/
 
 		/*
 		// (DEBUG): "Wait" and change slider randomly once every few frames
