@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class titlescr : MonoBehaviour {
+public class screndgame : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -11,9 +11,11 @@ public class titlescr : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.D)) 
+
+		if(Input.anyKeyDown) 
 		{
-		Application.LoadLevel ("MainGameLoop");
+		 Application.Quit(); // Quits the game
 		}
+		
 	}
 }
