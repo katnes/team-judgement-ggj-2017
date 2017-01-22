@@ -57,7 +57,8 @@ public class GameManager : MonoBehaviour {
 	private Animator crowdanim;
 
 	//vr script setup
-	private VRTK_InteractableObject vrScript;
+	private VRTK_InteractableObject vrDeathScript;
+	private VRTK_InteractableObject vrMercyScript;
 
 	// Use this for initialization
 	void Start () {
@@ -67,7 +68,8 @@ public class GameManager : MonoBehaviour {
 		Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 		prisonerNum = 1;
 		crowdanim = GameObject.Find ("Crowd2").GetComponent<Animator>();
-		vrScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
+		vrDeathScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
+		vrMercyScript = GameObject.Find ("Mercy").GetComponent<VRTK_InteractableObject>();
 	}
 
 	void changeGameState(GameState newState) {
@@ -216,8 +218,8 @@ public class GameManager : MonoBehaviour {
 				crowd02.PlayDelayed(.5f + plea.clip.length + crowd01.clip.length);
 				}
 							
-			//TODO: Add code to listen for touch of Death game object
-			if (Input.GetKeyDown (KeyCode.D) || vrScript.IsTouched() == true) {
+			//NOW IT listens for wave of Death game object
+			if (Input.GetKeyDown (KeyCode.D) || vrDeathScript.IsTouched() == true) {
 				//run kill code
 				changeGameState (GameState.CINEMATIC2);
 				kill.Play();
@@ -245,8 +247,8 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 
-			//TODO: Add code to listen for touch of Mercy gameobject
-			if (Input.GetKeyDown (KeyCode.A) || mercyWave == true || countdownTime < 0.0f) {
+			//NOW IT listens for wave of Mercy gameobject
+			if (Input.GetKeyDown (KeyCode.A) || vrMercyScript.IsTouched() == true || countdownTime < 0.0f) {
 				//run let live code
 				changeGameState (GameState.FINAL_PAUSE);
 				spare.Play();
