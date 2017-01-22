@@ -20,12 +20,15 @@ public class GameManager : MonoBehaviour {
 	bool sleep = false;
 	bool screaming = false;
 
+
+
 	// Use this for initialization
 	void Start () {
 		squish.SetActive (false);
 		deathCrate.SetActive (false);
 		slept = false;
 		crowdCheer.SetActive (false);
+		Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 	}
 	
 	// Update is called once per frame
@@ -75,9 +78,9 @@ public class GameManager : MonoBehaviour {
 			slept = true;
 
 			deathCrate.SetActive (true);
-			Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
+			//Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 
-
+			StartCoroutine(pause ());
 			//Debug.Log (rand);
 
 
@@ -97,5 +100,28 @@ public class GameManager : MonoBehaviour {
 
 
 
+	}
+
+	void reset(){
+
+		squish.SetActive (false);
+		deathCrate.transform.position = new Vector3 (deathCrate.transform.position.x, 10.0f, deathCrate.transform.position.z);
+		deathCrate.SetActive (false);
+
+		slept = false;
+		crowdCheer.SetActive (false);
+		text.text = "";
+
+		frameSleep = 0.0f;
+		slept = false;
+		sleep = false;
+		screaming = false;
+
+	}
+
+	IEnumerator pause() {
+
+		yield return new WaitForSeconds(2);
+		reset ();
 	}
 }
