@@ -23,14 +23,16 @@ public class BloodStarter : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		bloodSplat.SetActive (true);
-		deathScream1.SetActive (false);
-		deathScream2.SetActive (false);
-		deathScream3.SetActive (false);
-		squish.SetActive (true);
-		//StartCoroutine(MyMethod ());
+		if (other.CompareTag ("DeathCrate")) {
 
+			bloodSplat.SetActive (true);
+			deathScream1.SetActive (false);
+			deathScream2.SetActive (false);
+			deathScream3.SetActive (false);
+			squish.SetActive (true);
+			//StartCoroutine(MyMethod ());
 
+		}
 	}
 	/*
 	IEnumerator MyMethod() {
