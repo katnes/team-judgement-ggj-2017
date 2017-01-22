@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 public class GameManager : MonoBehaviour {
 
@@ -17,6 +18,10 @@ public class GameManager : MonoBehaviour {
 	public GameObject crowdCheer;
 	public GameObject crowdBoo; 
 	public RatingSlider ratingSlider;
+
+	//VR Things
+	public bool deathWave;
+	public bool mercyWave;
 
 	//setting up prisoner sounds
 	 public AudioSource[] pSounds;
@@ -47,8 +52,12 @@ public class GameManager : MonoBehaviour {
 	public float countdownTime = 60.0f;
 	public float timePassedInGameState = 0.0f;
 
+	//animator setup
 	private Animator anim;
 	private Animator crowdanim;
+
+	//vr script setup
+	private VRTK_InteractableObject vrScript;
 
 	// Use this for initialization
 	void Start () {
@@ -58,6 +67,7 @@ public class GameManager : MonoBehaviour {
 		Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 		prisonerNum = 1;
 		crowdanim = GameObject.Find ("Crowd2").GetComponent<Animator>();
+		vrScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
 	}
 
 	void changeGameState(GameState newState) {
@@ -79,6 +89,10 @@ public class GameManager : MonoBehaviour {
 
 		if (gameState == GameState.INIT) {
 			// Initialize the loop
+			
+			mercyWave = false;
+			deathWave = false;
+
 			// Play "next prisoner" sound
 			nextPris.SetActive (true);
 			// Activate next prisoner prefab
@@ -203,7 +217,7 @@ public class GameManager : MonoBehaviour {
 				}
 							
 			//TODO: Add code to listen for touch of Death game object
-			if (Input.GetKeyDown (KeyCode.D)) {
+			if (Input.GetKeyDown (KeyCode.D) || vrScript.IsTouched() == true) {
 				//run kill code
 				changeGameState (GameState.CINEMATIC2);
 				kill.Play();
@@ -232,7 +246,7 @@ public class GameManager : MonoBehaviour {
 			}
 
 			//TODO: Add code to listen for touch of Mercy gameobject
-			if (Input.GetKeyDown (KeyCode.A) || countdownTime < 0.0f) {
+			if (Input.GetKeyDown (KeyCode.A) || mercyWave == true || countdownTime < 0.0f) {
 				//run let live code
 				changeGameState (GameState.FINAL_PAUSE);
 				spare.Play();
