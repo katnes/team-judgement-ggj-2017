@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ErasePeasant : MonoBehaviour {
 
-	public GameObject peasant;
+	//public GameObject peasant;
+	public GameManager gameManager;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,7 @@ public class ErasePeasant : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		Debug.Log ("peasant trigger activated");
-		peasant.SetActive (false);
+		gameManager.peasant.SetActive (false);
 
 	
 	}

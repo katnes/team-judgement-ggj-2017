@@ -28,13 +28,36 @@ public class RatingSlider : MonoBehaviour {
 
 	}
 
-	void shiftPopularity(int popShift) {
+	public void shiftPopularity(bool wasKilled) {
+		// Determine how much the popularity will shift based on your decision
+		int popShift;
+		if (wasKilled) {
+			popShift = prisoner.calcKillPopularityShift();
+		}
+		else {
+			popShift = prisoner.calcSparePopularityShift();
+		}
+
+		// Change the kingdom popularity and score bar
 		kingdom.popularity += popShift;
+		if (kingdom.popularity > 100)
+			kingdom.popularity = 100;
 		ratingSlider.value = kingdom.popularity / 100.0f;
+
+		// Set the text showing how your kingdom popularity score has changed
 		string prefix = "";
 		if (popShift > 0)
 			prefix = "+";
 		ratingText.text = prefix + popShift;
+		countdownText.text = "";
+
+		// Change color of slider (goes from low color, to middle color, to high color)
+		if (ratingSlider.value < 0.5f)
+			fillImg.color = Color.Lerp(lowColor, middleColor, ratingSlider.value * 2);
+		else if (ratingSlider.value > 0.5f)
+			fillImg.color = Color.Lerp(middleColor, highColor, (ratingSlider.value - 0.5f) * 2);
+		else
+			fillImg.color = middleColor;
 	}
 
 	// Update is called once per frame
@@ -53,12 +76,12 @@ public class RatingSlider : MonoBehaviour {
 		// Change slider based on key presses
 		if(Input.GetKeyDown(KeyCode.D)){
 			//run kill code
-			shiftPopularity(prisoner.calcKillPopularityShift());
+			////shiftPopularity(true);
 			stopCountdown = true;
 		}
 		if (Input.GetKeyDown(KeyCode.A)) {
 			//run let live code
-			shiftPopularity(prisoner.calcSparePopularityShift());
+			////shiftPopularity(false);
 			stopCountdown = true;
 		}
 
@@ -79,13 +102,5 @@ public class RatingSlider : MonoBehaviour {
 		}
 		*/
 
-		// Change color of slider
-		if (ratingSlider.value < 0.5f)
-			fillImg.color = Color.Lerp(lowColor, middleColor, ratingSlider.value * 2);
-		else if (ratingSlider.value > 0.5f)
-			fillImg.color = Color.Lerp(middleColor, highColor, (ratingSlider.value - 0.5f) * 2);
-		else
-			fillImg.color = middleColor;
-		
 	}
 }

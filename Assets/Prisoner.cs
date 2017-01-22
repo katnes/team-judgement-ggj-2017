@@ -29,9 +29,6 @@ public class Prisoner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		background = 0;
-		action = -5;
-		renown = -5;
 	}
 	
 	// Update is called once per frame
