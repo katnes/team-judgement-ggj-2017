@@ -28,14 +28,15 @@ public class BloodStarter : MonoBehaviour {
 		deathScream2.SetActive (false);
 		deathScream3.SetActive (false);
 		squish.SetActive (true);
-		StartCoroutine(MyMethod ());
+		//StartCoroutine(MyMethod ());
 
 
 	}
-
+	/*
 	IEnumerator MyMethod() {
 		
 		yield return new WaitForSeconds(.5f);
 		crowdCheer.SetActive (true);
 	}
+	*/
 }

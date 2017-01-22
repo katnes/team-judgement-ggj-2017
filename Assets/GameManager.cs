@@ -53,7 +53,16 @@ public class GameManager : MonoBehaviour {
 
 	//animator setup
 	private Animator anim;
-	private Animator crowdanim;
+	private Animator crowd1;
+	private Animator crowd2;
+	private Animator crowd3;
+	private Animator crowd4;
+	private Animator crowd5;
+	private Animator crowd6;
+	private Animator crowd7;
+	private Animator crowd8;
+	private Animator crowd9;
+	private Animator crowd10;
 
 	//vr script setup
 	private VRTK_InteractableObject vrDeathScript;
@@ -67,7 +76,16 @@ public class GameManager : MonoBehaviour {
 		Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 		prisonerNum = 1;
 		countdownTime = 20.0f;
-		crowdanim = GameObject.Find ("Crowd2").GetComponent<Animator>();
+		crowd1 = GameObject.Find ("Crowd1").GetComponent<Animator>();
+		crowd2 = GameObject.Find ("Crowd2").GetComponent<Animator>();
+		crowd3 = GameObject.Find ("crowd3").GetComponent<Animator>();
+		crowd4 = GameObject.Find ("crowd4").GetComponent<Animator>();
+		crowd5 = GameObject.Find ("crowd5").GetComponent<Animator>();
+		crowd6 = GameObject.Find ("crowd6").GetComponent<Animator>();
+		crowd7 = GameObject.Find ("crowd7").GetComponent<Animator>();
+		crowd8 = GameObject.Find ("Crowd8").GetComponent<Animator>();
+		crowd9 = GameObject.Find ("Crowd9").GetComponent<Animator>();
+		crowd10 = GameObject.Find ("Crowd10").GetComponent<Animator>();
 		vrDeathScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
 		vrMercyScript = GameObject.Find ("Mercy").GetComponent<VRTK_InteractableObject>();
 	}
@@ -101,6 +119,7 @@ public class GameManager : MonoBehaviour {
 			nextPris.SetActive (true);
 			// Activate next prisoner prefab
 			if (prisonerNum == 1) {
+				Noble.SetActive (false);
 				Cobbler.SetActive (true);
 				peasant = GameObject.Find ("Cobbler");
 				anim = peasant.GetComponent<Animator> ();
@@ -209,8 +228,8 @@ public class GameManager : MonoBehaviour {
 		// TODO: When CINEMATIC1 is over, go to ACTION - think this is OK?
 		else if (gameState == GameState.CINEMATIC1 && timePassedInGameState > (intro.clip.length + 0.5f)) {
 			plea.Play();
-			crowd01.PlayDelayed(0.5f);
-			crowd02.PlayDelayed(1.0f);
+			crowd01.PlayDelayed(1.0f);
+			crowd02.PlayDelayed(2.0f);
 
 			changeGameState (GameState.ACTION);
 		} else if (gameState == GameState.ACTION) {
@@ -246,6 +265,15 @@ public class GameManager : MonoBehaviour {
 				wasKilled = true;
 				ratingSlider.shiftPopularity (wasKilled);
 
+				int popShift = ratingSlider.calcPopularityShift(wasKilled);
+				if (popShift < 0) {
+					crowdMad ();
+				} 
+				else {
+					crowdExcite ();
+				}
+
+				/*
 				rand = Random.Range (0, 3);
 				if (screaming == false && !kill.isPlaying) {
 					switch (rand) {
@@ -263,6 +291,7 @@ public class GameManager : MonoBehaviour {
 						break;
 					}
 				}
+				*/
 			}
 
 			//NOW IT listens for wave of Mercy gameobject
@@ -281,12 +310,37 @@ public class GameManager : MonoBehaviour {
 				anim.Play("Live");
 
 				//TODO: Figure out if crowd should be happy or sad based on popularity score and choice
-				crowdBoo.SetActive (true);
-				crowdanim.Play("Mad");
+				int popShift = ratingSlider.calcPopularityShift(wasKilled);
+				if (popShift < 0) {
+					crowdMad ();
+					crowdBoo.SetActive (true);
+				} 
+				else {
+					crowdExcite ();
+					crowdCheer.SetActive (true);
+				}
+				//crowdBoo.SetActive (true);
+				//crowdanim.Play("Mad");
 			}
 		} else if (gameState == GameState.CINEMATIC2) {
 			
-			if (timePassedInGameState > 2.0f) {
+			if (timePassedInGameState > (kill.clip.length - 0.5f)) {
+				kill.Stop ();
+				rand = Random.Range (0, 3);
+				switch (rand) {
+					case 0:
+						deathScream1.SetActive (true);
+						break;
+					case 1:
+						deathScream2.SetActive (true);
+						break;
+					case 2:
+						deathScream3.SetActive (true);
+						break;
+					default:
+						Debug.Log ("something is wrong");
+						break;
+				}
 
 				if (wasKilled) {
 					deathCrate.SetActive (true);
@@ -298,6 +352,17 @@ public class GameManager : MonoBehaviour {
 				changeGameState(GameState.FINAL_PAUSE);
 			}
 		} else if (gameState == GameState.FINAL_PAUSE) {
+			if (timePassedInGameState > 1.0f) {
+				if (wasKilled) {
+					int popShift = ratingSlider.calcPopularityShift(wasKilled);
+					if (popShift < 0) {
+						crowdBoo.SetActive (true);
+					} 
+					else {
+						crowdCheer.SetActive (true);
+					}
+				}
+			}
 			if (timePassedInGameState > 5.0f) {
 				reset();
 			}
@@ -311,11 +376,14 @@ public class GameManager : MonoBehaviour {
 
 	void reset() {
 
+		Debug.Log ("reset");
 		squish.SetActive (false);
 		deathCrate.transform.position = new Vector3 (deathCrate.transform.position.x, 10.0f, deathCrate.transform.position.z);
 		deathCrate.SetActive (false);
 
 		crowdCheer.SetActive (false);
+		crowdBoo.SetActive (false);
+
 		nextPris.SetActive (false);
 		bloodSplat.SetActive (false);
 		ratingSlider.ratingText.text = "";
@@ -324,6 +392,47 @@ public class GameManager : MonoBehaviour {
 		wasKilled = true;
 		countdownTime = 20.0f;
 
+		crowdIdle ();
+
 		changeGameState(GameState.INIT);
+	}
+
+	void crowdMad() {
+		crowd1.Play ("Mad");
+		crowd2.Play ("Mad");
+		crowd3.Play ("Mad");
+		crowd4.Play ("Mad");
+		crowd5.Play ("Mad");
+		crowd6.Play ("Mad");
+		crowd7.Play ("Mad");
+		crowd8.Play ("Mad");
+		crowd9.Play ("Mad");
+		crowd10.Play ("Mad");
+	}
+
+	void crowdExcite() {
+		crowd1.Play ("Excite");
+		crowd2.Play ("Excite");
+		crowd3.Play ("Excite");
+		crowd4.Play ("Excite");
+		crowd5.Play ("Excite");
+		crowd6.Play ("Excite");
+		crowd7.Play ("Excite");
+		crowd8.Play ("Excite");
+		crowd9.Play ("Excite");
+		crowd10.Play ("Excite");
+	}
+
+	void crowdIdle() {
+		crowd1.Play ("Idle");
+		crowd2.Play ("Idle");
+		crowd3.Play ("Idle");
+		crowd4.Play ("Idle");
+		crowd5.Play ("Idle");
+		crowd6.Play ("Idle");
+		crowd7.Play ("Idle");
+		crowd8.Play ("Idle");
+		crowd9.Play ("Idle");
+		crowd10.Play ("Idle");
 	}
 }

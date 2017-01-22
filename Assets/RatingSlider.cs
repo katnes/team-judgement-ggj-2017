@@ -28,15 +28,18 @@ public class RatingSlider : MonoBehaviour {
 		ratingSlider.value = kingdom.popularity / 100.0f;
 	}
 
-	public void shiftPopularity(bool wasKilled) {
-		// Determine how much the popularity will shift based on your decision
-		int popShift;
+	public int calcPopularityShift(bool wasKilled) {
 		if (wasKilled) {
-			popShift = prisoner.calcKillPopularityShift();
+			return prisoner.calcKillPopularityShift();
 		}
 		else {
-			popShift = prisoner.calcSparePopularityShift();
+			return prisoner.calcSparePopularityShift();
 		}
+	}
+
+	public void shiftPopularity(bool wasKilled) {
+		// Determine how much the popularity will shift based on your decision
+		int popShift = calcPopularityShift(wasKilled);
 
 		// Change the kingdom popularity and score bar
 		kingdom.popularity += popShift;
