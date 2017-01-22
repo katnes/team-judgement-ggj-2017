@@ -149,6 +149,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = 30;
 				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 4) {
+				Wanderer.SetActive(false);
 				Smith.SetActive(true);
 				peasant = GameObject.Find ("Smith");
 				anim = peasant.GetComponent<Animator>();
@@ -165,6 +166,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = 0;
 				ratingSlider.prisoner.renown = 20;
 			} else if (prisonerNum == 5) {
+				Smith.SetActive(false);
 				Noble.SetActive(true);
 				peasant = GameObject.Find ("Noble");
 				anim = peasant.GetComponent<Animator>();
@@ -185,6 +187,7 @@ public class GameManager : MonoBehaviour {
 			// Loop back around prisoners
 			++prisonerNum;
 			if (prisonerNum > maxPrisonerNum)
+				//TODO: Turn this into the game over win condition
 				prisonerNum = 1;
 			
 			peasant.SetActive (true);
