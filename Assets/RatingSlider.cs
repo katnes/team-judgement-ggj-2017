@@ -23,9 +23,9 @@ public class RatingSlider : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ratingText.text = "";
+		countdownText.text = "";
 		fillImg.color = middleColor;
 		ratingSlider.value = kingdom.popularity / 100.0f;
-
 	}
 
 	public void shiftPopularity(bool wasKilled) {
@@ -63,6 +63,7 @@ public class RatingSlider : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		/*
 		// Countdown timer
 		remainingTime -= Time.deltaTime;
 		int remainingSeconds = Mathf.CeilToInt (remainingTime);
@@ -84,6 +85,7 @@ public class RatingSlider : MonoBehaviour {
 			////shiftPopularity(false);
 			stopCountdown = true;
 		}
+		*/
 
 		/*
 		// (DEBUG): "Wait" and change slider randomly once every few frames

@@ -5,7 +5,6 @@ using VRTK;
 
 public class GameManager : MonoBehaviour {
 
-	public TextMesh text;
 	public GameObject deathCrate;
 	//public GameObject bloodTrigger;
 	public float gravitySpeed;
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour {
 	 public AudioSource kill;
 	 public AudioSource spare;
 
-	public enum GameState {INIT, CINEMATIC1, ACTION, CINEMATIC2, FINAL_PAUSE};
+	public enum GameState {INIT, NEXT_WALK, CINEMATIC1, ACTION, CINEMATIC2, FINAL_PAUSE};
 	public GameState gameState = GameState.INIT;
 
 	// Set up Characters
@@ -49,7 +48,7 @@ public class GameManager : MonoBehaviour {
 	bool screaming = false;
 	bool wasKilled = true;
 
-	public float countdownTime = 60.0f;
+	public float countdownTime = 20.0f;
 	public float timePassedInGameState = 0.0f;
 
 	//animator setup
@@ -67,6 +66,7 @@ public class GameManager : MonoBehaviour {
 		crowdCheer.SetActive (false);
 		Physics.gravity = new Vector3 (0, gravitySpeed * -1, 0);
 		prisonerNum = 1;
+		countdownTime = 20.0f;
 		crowdanim = GameObject.Find ("Crowd2").GetComponent<Animator>();
 		vrDeathScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
 		vrMercyScript = GameObject.Find ("Mercy").GetComponent<VRTK_InteractableObject>();
@@ -77,12 +77,14 @@ public class GameManager : MonoBehaviour {
 		timePassedInGameState = 0.0f;
 	}
 
+	/*
 	//coroutine Test	
 	IEnumerator TestCoroutine()
 	{
 		yield return new WaitUntil (() => !intro.isPlaying);
 		plea.Play();
 	}
+	*/
 
 	// Update is called once per frame
 	void Update () {
@@ -99,85 +101,85 @@ public class GameManager : MonoBehaviour {
 			nextPris.SetActive (true);
 			// Activate next prisoner prefab
 			if (prisonerNum == 1) {
-				Cobbler.SetActive(true);
+				Cobbler.SetActive (true);
 				peasant = GameObject.Find ("Cobbler");
-				anim = peasant.GetComponent<Animator>();
+				anim = peasant.GetComponent<Animator> ();
 				//set sounds
-				pSounds = peasant.GetComponents<AudioSource>();
-				intro = pSounds[5];
- 				plea = pSounds[4];
-				crowd01 = pSounds[2];
-				crowd02 = pSounds[3];
-				kill = pSounds[1];
-				spare = pSounds[0];
+				pSounds = peasant.GetComponents<AudioSource> ();
+				intro = pSounds [5];
+				plea = pSounds [4];
+				crowd01 = pSounds [2];
+				crowd02 = pSounds [3];
+				kill = pSounds [1];
+				spare = pSounds [0];
 				//set popularity
 				ratingSlider.prisoner.background = -5;
 				ratingSlider.prisoner.action = -5;
 				ratingSlider.prisoner.renown = -5;
 			} else if (prisonerNum == 2) {
-				Cobbler.SetActive(false);
-				Soldier.SetActive(true);
+				Cobbler.SetActive (false);
+				Soldier.SetActive (true);
 				peasant = GameObject.Find ("Soldier");
-				anim = peasant.GetComponent<Animator>();
+				anim = peasant.GetComponent<Animator> ();
 				//set sounds
-				pSounds = peasant.GetComponents<AudioSource>();
-				intro = pSounds[5];
- 				plea = pSounds[4];
-				crowd01 = pSounds[2];
-				crowd02 = pSounds[3];
-				kill = pSounds[1];
-				spare = pSounds[0];
+				pSounds = peasant.GetComponents<AudioSource> ();
+				intro = pSounds [5];
+				plea = pSounds [4];
+				crowd01 = pSounds [2];
+				crowd02 = pSounds [3];
+				kill = pSounds [1];
+				spare = pSounds [0];
 				//set popularity
 				ratingSlider.prisoner.background = 10;
 				ratingSlider.prisoner.action = -5;
 				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 3) {
-				Soldier.SetActive(false);
-				Wanderer.SetActive(true);
+				Soldier.SetActive (false);
+				Wanderer.SetActive (true);
 				peasant = GameObject.Find ("Wanderer");
-				anim = peasant.GetComponent<Animator>();
+				anim = peasant.GetComponent<Animator> ();
 				//set sounds
-				pSounds = peasant.GetComponents<AudioSource>();
-				intro = pSounds[5];
- 				plea = pSounds[4];
-				crowd01 = pSounds[2];
-				crowd02 = pSounds[3];
-				kill = pSounds[1];
-				spare = pSounds[0];
+				pSounds = peasant.GetComponents<AudioSource> ();
+				intro = pSounds [5];
+				plea = pSounds [4];
+				crowd01 = pSounds [2];
+				crowd02 = pSounds [3];
+				kill = pSounds [1];
+				spare = pSounds [0];
 				//set popularity
 				ratingSlider.prisoner.background = -10;
 				ratingSlider.prisoner.action = 30;
 				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 4) {
-				Wanderer.SetActive(false);
-				Smith.SetActive(true);
+				Wanderer.SetActive (false);
+				Smith.SetActive (true);
 				peasant = GameObject.Find ("Smith");
-				anim = peasant.GetComponent<Animator>();
+				anim = peasant.GetComponent<Animator> ();
 				//set sounds
-				pSounds = peasant.GetComponents<AudioSource>();
-				intro = pSounds[5];
- 				plea = pSounds[4];
-				crowd01 = pSounds[2];
-				crowd02 = pSounds[3];
-				kill = pSounds[1];
-				spare = pSounds[0];
+				pSounds = peasant.GetComponents<AudioSource> ();
+				intro = pSounds [5];
+				plea = pSounds [4];
+				crowd01 = pSounds [2];
+				crowd02 = pSounds [3];
+				kill = pSounds [1];
+				spare = pSounds [0];
 				//set popularity
 				ratingSlider.prisoner.background = -10;
 				ratingSlider.prisoner.action = 0;
 				ratingSlider.prisoner.renown = 20;
 			} else if (prisonerNum == 5) {
-				Smith.SetActive(false);
-				Noble.SetActive(true);
+				Smith.SetActive (false);
+				Noble.SetActive (true);
 				peasant = GameObject.Find ("Noble");
-				anim = peasant.GetComponent<Animator>();
+				anim = peasant.GetComponent<Animator> ();
 				//set sounds
-				pSounds = peasant.GetComponents<AudioSource>();
-				intro = pSounds[5];
- 				plea = pSounds[4];
-				crowd01 = pSounds[2];
-				crowd02 = pSounds[3];
-				kill = pSounds[1];
-				spare = pSounds[0];
+				pSounds = peasant.GetComponents<AudioSource> ();
+				intro = pSounds [5];
+				plea = pSounds [4];
+				crowd01 = pSounds [2];
+				crowd02 = pSounds [3];
+				kill = pSounds [1];
+				spare = pSounds [0];
 				//set popularity
 				ratingSlider.prisoner.background = -10;
 				ratingSlider.prisoner.action = -20;
@@ -193,14 +195,23 @@ public class GameManager : MonoBehaviour {
 			peasant.SetActive (true);
 
 			//After walk animation, change state
-			anim.Play("Walk");
-			changeGameState (GameState.CINEMATIC1);
+			anim.Play ("Walk");
+			changeGameState (GameState.NEXT_WALK);
 			
 		
+		} 
+		else if (gameState == GameState.NEXT_WALK && timePassedInGameState > 3.0f) {
+			intro.Play ();
+			//prisoner idle animation
+			anim.Play ("Kneel");
+			changeGameState (GameState.CINEMATIC1);
 		}
 		// TODO: When CINEMATIC1 is over, go to ACTION - think this is OK?
-		else if (gameState == GameState.CINEMATIC1 && timePassedInGameState > 2.0f) {
-			intro.Play();
+		else if (gameState == GameState.CINEMATIC1 && timePassedInGameState > (intro.clip.length + 0.5f)) {
+			plea.Play();
+			crowd01.PlayDelayed(0.5f);
+			crowd02.PlayDelayed(1.0f);
+
 			changeGameState (GameState.ACTION);
 		} else if (gameState == GameState.ACTION) {
 
@@ -209,27 +220,31 @@ public class GameManager : MonoBehaviour {
 			if (remainingSeconds < 0)
 				remainingSeconds = 0;
 			ratingSlider.countdownText.text = "" + remainingSeconds;
-			
+
+			/*
 			//playing audio clips
 			if (intro.isPlaying)
 				{
 				plea.PlayDelayed(.5f);
-				//prisoner idle animation
-				anim.Play("Kneel");
 				//else StartCoroutine(TestCoroutine());
 				crowd01.PlayDelayed(.5f + plea.clip.length);
 				crowd02.PlayDelayed(.5f + plea.clip.length + crowd01.clip.length);
 				}
+			*/
 							
 			//NOW IT listens for wave of Death game object
-			if (Input.GetKeyDown (KeyCode.D) || vrDeathScript.IsTouched() == true) {
+			if (Input.GetKeyDown (KeyCode.D) || (vrDeathScript && vrDeathScript.IsTouched() == true)) {
 				//run kill code
 				changeGameState (GameState.CINEMATIC2);
+
+				plea.Stop();
+				crowd01.Stop();
+				crowd02.Stop();
+
 				kill.Play();
 				anim.Play("Kill");
 				wasKilled = true;
 				ratingSlider.shiftPopularity (wasKilled);
-				text.text = "Killed";
 
 				rand = Random.Range (0, 3);
 				if (screaming == false && !kill.isPlaying) {
@@ -251,13 +266,18 @@ public class GameManager : MonoBehaviour {
 			}
 
 			//NOW IT listens for wave of Mercy gameobject
-			if (Input.GetKeyDown (KeyCode.A) || vrMercyScript.IsTouched() == true || countdownTime < 0.0f) {
+			if (Input.GetKeyDown (KeyCode.A) || countdownTime < 0.0f || 
+				(vrMercyScript && vrMercyScript.IsTouched() == true)) {
 				//run let live code
 				changeGameState (GameState.FINAL_PAUSE);
+
+				plea.Stop();
+				crowd01.Stop();
+				crowd02.Stop();
+
 				spare.Play();
 				wasKilled = false;
 				ratingSlider.shiftPopularity (wasKilled);
-				text.text = "Let live";
 				anim.Play("Live");
 
 				//TODO: Figure out if crowd should be happy or sad based on popularity score and choice
@@ -298,12 +318,11 @@ public class GameManager : MonoBehaviour {
 		crowdCheer.SetActive (false);
 		nextPris.SetActive (false);
 		bloodSplat.SetActive (false);
-		text.text = "";
 		ratingSlider.ratingText.text = "";
 
 		screaming = false;
 		wasKilled = true;
-		countdownTime = 35.0f;
+		countdownTime = 20.0f;
 
 		changeGameState(GameState.INIT);
 	}
