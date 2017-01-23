@@ -18,9 +18,6 @@ public class ErasePeasant : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		Debug.Log ("peasant trigger activated");
 		//gameManager.peasant.SetActive (false);
-
-	
 	}
 }

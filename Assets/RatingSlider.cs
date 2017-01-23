@@ -6,12 +6,15 @@ using UnityEngine.UI;
 public class RatingSlider : MonoBehaviour {
 
 	public Slider ratingSlider;
+	public Slider backgroundDiffSlider;
 	public Text ratingText;
 	public Text countdownText;
-	public Image fillImg;
+	public Image ratingFillImg;
+	public Image backgroundDiffFillImg;
 	public Kingdom kingdom;
 	public Prisoner prisoner;
 
+	public float currentSliderValue;
 	public int count = 0;
 	public float remainingTime = 10.0f;
 	public bool stopCountdown = false;
@@ -24,8 +27,10 @@ public class RatingSlider : MonoBehaviour {
 	void Start () {
 		ratingText.text = "";
 		countdownText.text = "";
-		fillImg.color = middleColor;
-		ratingSlider.value = kingdom.popularity / 100.0f;
+		currentSliderValue = kingdom.popularity / 100.0f;
+		backgroundDiffSlider.value = ratingSlider.value = currentSliderValue;
+		ratingFillImg.color = getFillColor ();
+		backgroundDiffFillImg.color = ratingFillImg.color;
 	}
 
 	public int calcPopularityShift(bool wasKilled) {
@@ -41,59 +46,55 @@ public class RatingSlider : MonoBehaviour {
 		// Determine how much the popularity will shift based on your decision
 		int popShift = calcPopularityShift(wasKilled);
 
-		// Change the kingdom popularity and score bar
+		// Change the kingdom popularity
 		kingdom.popularity += popShift;
 		if (kingdom.popularity > 100)
 			kingdom.popularity = 100;
-		ratingSlider.value = kingdom.popularity / 100.0f;
+
+		currentSliderValue = kingdom.popularity / 100.0f;
+			
+		// Visually show the difference on the score bar
+		// If the popularity went down, fill the background slider with red and move the rating slider down
+		// If it went up, fill the background slider with green and move it up to the new rating
+		Color fillColor = getFillColor ();
+		if (popShift < 0) {
+			ratingSlider.value = currentSliderValue;
+			backgroundDiffFillImg.color = lowColor;
+			ratingFillImg.color = fillColor;
+		} 
+		else {
+			backgroundDiffSlider.value = currentSliderValue;
+			backgroundDiffFillImg.color = highColor;
+		}
 
 		// Set the text showing how your kingdom popularity score has changed
 		string prefix = "";
 		if (popShift > 0)
 			prefix = "+";
 		ratingText.text = prefix + popShift;
+
+		// Stop the countdown text
 		countdownText.text = "";
 
-		// Change color of slider (goes from low color, to middle color, to high color)
-		if (ratingSlider.value < 0.5f)
-			fillImg.color = Color.Lerp(lowColor, middleColor, ratingSlider.value * 2);
-		else if (ratingSlider.value > 0.5f)
-			fillImg.color = Color.Lerp(middleColor, highColor, (ratingSlider.value - 0.5f) * 2);
+	}
+
+	public Color getFillColor() {
+		// Determine color of slider (goes from low color, to middle color, to high color)
+		if (currentSliderValue < 0.5f)
+			return Color.Lerp(lowColor, middleColor, currentSliderValue * 2);
+		else if (currentSliderValue > 0.5f)
+			return Color.Lerp(middleColor, highColor, (currentSliderValue - 0.5f) * 2);
 		else
-			fillImg.color = middleColor;
+			return middleColor;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
 		/*
-		// Countdown timer
-		remainingTime -= Time.deltaTime;
-		int remainingSeconds = Mathf.CeilToInt (remainingTime);
-		if (remainingSeconds < 0)
-			remainingSeconds = 0;
-		if (stopCountdown)
-			countdownText.text = "";
-		else
-			countdownText.text = "" + remainingSeconds;
-
-		// Change slider based on key presses
-		if(Input.GetKeyDown(KeyCode.D)){
-			//run kill code
-			////shiftPopularity(true);
-			stopCountdown = true;
-		}
-		if (Input.GetKeyDown(KeyCode.A)) {
-			//run let live code
-			////shiftPopularity(false);
-			stopCountdown = true;
-		}
-		*/
-
-		/*
 		// (DEBUG): "Wait" and change slider randomly once every few frames
 		++count;
-		if (count % 2 != 0)
+		if (count % 5 != 0)
 			return;
 		count = 0;
 		// Randomly change slider value with associated text

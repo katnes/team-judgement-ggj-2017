@@ -23,15 +23,15 @@ public class BloodStarter : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.CompareTag ("DeathCrate")) {
-
+		// Make sure the colliding object is the death create, not a celebrating prisoner
+		if (other.name == "DeathCrate") {
+			// Start the blood splat and end the death scream
 			bloodSplat.SetActive (true);
 			deathScream1.SetActive (false);
 			deathScream2.SetActive (false);
 			deathScream3.SetActive (false);
 			squish.SetActive (true);
 			//StartCoroutine(MyMethod ());
-
 		}
 	}
 	/*
