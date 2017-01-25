@@ -152,8 +152,8 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.renown = 10;
 			}
 
-			// Set anim and sounds from current prisoner
-			anim = currentPrisoner.GetComponent<Animator> ();
+            // Set anim and sounds from current prisoner
+            anim = currentPrisoner.GetComponent<Animator> ();
 			pSounds = currentPrisoner.GetComponents<AudioSource> ();
 			intro = pSounds [5];
 			plea = pSounds [4];
@@ -306,7 +306,7 @@ public class GameManager : MonoBehaviour {
 
 		// Check final game loss conditions
 		if (ratingSlider.kingdom.popularity <= 0) {
-            // TODO: lose
+            // load game over scene
             SceneManager.LoadScene("losar");
         }
 	}
@@ -339,10 +339,11 @@ public class GameManager : MonoBehaviour {
 
 		// Go to next prisoner (loop back if necessary)
 		++prisonerNum;
-		if (prisonerNum > maxPrisonerNum) {
-			//TODO: Turn this into the game over win condition
-			prisonerNum = 1;
-		}
+		if (prisonerNum > maxPrisonerNum)
+        {
+			//load winning scene
+                SceneManager.LoadScene("winnar");
+        }
 
 		changeGameState(GameState.INIT);
 	}

@@ -31,9 +31,10 @@ public class BloodStarter : MonoBehaviour {
 			deathScream2.SetActive (false);
 			deathScream3.SetActive (false);
 			squish.SetActive (true);
-			//StartCoroutine(MyMethod ());
-		}
-	}
+            GameObject.Find("currentPrisoner").GetComponent<Animator>().enabled = false;
+           //StartCoroutine(MyMethod ());
+        }
+    }
 	/*
 	IEnumerator MyMethod() {
 		
