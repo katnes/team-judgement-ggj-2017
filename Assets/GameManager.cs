@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VRTK;
 
 public class GameManager : MonoBehaviour {
@@ -130,25 +131,25 @@ public class GameManager : MonoBehaviour {
 				Wanderer.SetActive (true);
 				currentPrisoner = Wanderer;
 				//set popularity
-				ratingSlider.prisoner.background = -10;
-				ratingSlider.prisoner.action = 30;
-				ratingSlider.prisoner.renown = 10;
+				ratingSlider.prisoner.background = 10;
+				ratingSlider.prisoner.action = -30;
+				ratingSlider.prisoner.renown = -10;
 			} else if (prisonerNum == 4) {
 				Wanderer.SetActive (false);
 				Smith.SetActive (true);
 				currentPrisoner = Smith;
 				//set popularity
 				ratingSlider.prisoner.background = -10;
-				ratingSlider.prisoner.action = 0;
-				ratingSlider.prisoner.renown = 20;
+				ratingSlider.prisoner.action = -20;
+				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 5) {
 				Smith.SetActive (false);
 				Noble.SetActive (true);
 				currentPrisoner = Noble;
 				//set popularity
-				ratingSlider.prisoner.background = -10;
-				ratingSlider.prisoner.action = -20;
-				ratingSlider.prisoner.renown = -10;
+				ratingSlider.prisoner.background = 10;
+				ratingSlider.prisoner.action = 20;
+				ratingSlider.prisoner.renown = 10;
 			}
 
 			// Set anim and sounds from current prisoner
@@ -305,8 +306,9 @@ public class GameManager : MonoBehaviour {
 
 		// Check final game loss conditions
 		if (ratingSlider.kingdom.popularity <= 0) {
-			// TODO: lose
-		}
+            // TODO: lose
+            SceneManager.LoadScene("losar");
+        }
 	}
 
 	void reset() {
