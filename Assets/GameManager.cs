@@ -85,8 +85,8 @@ public class GameManager : MonoBehaviour {
 		crowdAnims[7] = GameObject.Find ("Crowd8").GetComponent<Animator>();
 		crowdAnims[8] = GameObject.Find ("Crowd9").GetComponent<Animator>();
 		crowdAnims[9] = GameObject.Find ("Crowd10").GetComponent<Animator>();
-		vrDeathScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
-		vrMercyScript = GameObject.Find ("Mercy").GetComponent<VRTK_InteractableObject>();
+		//vrDeathScript = GameObject.Find ("Death").GetComponent<VRTK_InteractableObject>();
+		//vrMercyScript = GameObject.Find ("Mercy").GetComponent<VRTK_InteractableObject>();
 	}
 
 	void changeGameState(GameState newState) {
@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour {
 
             // Set anim and sounds from current prisoner
             anim = currentPrisoner.GetComponent<Animator> ();
+            anim.enabled = true; //fix for ragdoll shenanigans
 			pSounds = currentPrisoner.GetComponents<AudioSource> ();
 			intro = pSounds [5];
 			plea = pSounds [4];
@@ -212,7 +213,7 @@ public class GameManager : MonoBehaviour {
 				crowd02.Stop();
 
 				kill.Play();
-				anim.Play("Kill");
+				//anim.Play("Kill"); don't need with ragdoll
 				wasKilled = true;
 				ratingSlider.shiftPopularity (wasKilled);
 
