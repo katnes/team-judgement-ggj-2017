@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour {
 			nextPris.SetActive (true);
 			// Activate next prisoner prefab
 			if (prisonerNum == 1) {
-				Noble.SetActive (false);
+				//Noble.SetActive (false);
 				Cobbler.SetActive (true);
 				currentPrisoner = Cobbler;
 				//set popularity
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = -5;
 				ratingSlider.prisoner.renown = -5;
 			} else if (prisonerNum == 2) {
-				Cobbler.SetActive (false);
+				//Cobbler.SetActive (false);
 				Soldier.SetActive (true);
 				currentPrisoner = Soldier;
 				//set popularity
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = -5;
 				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 3) {
-				Soldier.SetActive (false);
+				//Soldier.SetActive (false);
 				Wanderer.SetActive (true);
 				currentPrisoner = Wanderer;
 				//set popularity
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = -30;
 				ratingSlider.prisoner.renown = -10;
 			} else if (prisonerNum == 4) {
-				Wanderer.SetActive (false);
+				//Wanderer.SetActive (false);
 				Smith.SetActive (true);
 				currentPrisoner = Smith;
 				//set popularity
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour {
 				ratingSlider.prisoner.action = -20;
 				ratingSlider.prisoner.renown = 10;
 			} else if (prisonerNum == 5) {
-				Smith.SetActive (false);
+				//Smith.SetActive (false);
 				Noble.SetActive (true);
 				currentPrisoner = Noble;
 				//set popularity
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour {
 			if (timePassedInGameState > 3.0f) {
 				// Once the prisoner has stopped walking, kneel and play the intro
 				intro.Play ();
-				anim.Play ("Kneel");
+				anim.SetBool("kneel", true);
 				changeGameState (GameState.CINEMATIC1);
 			}
 		}
@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour {
 				crowd02.Stop();
 
 				kill.Play();
-				//anim.Play("Kill"); don't need with ragdoll
+				anim.SetBool("die", true);
 				wasKilled = true;
 				ratingSlider.shiftPopularity (wasKilled);
 
@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour {
 				spare.Play();
 				wasKilled = false;
 				ratingSlider.shiftPopularity (wasKilled);
-				anim.Play("Live");
+				anim.SetBool ("live", true);
 
 				// Figure out if crowd should be happy or sad based on prisoner's popularity score and choice
 				int popShift = ratingSlider.calcPopularityShift(wasKilled);
@@ -324,6 +324,9 @@ public class GameManager : MonoBehaviour {
 
 		nextPris.SetActive (false);
 		bloodSplat.SetActive (false);
+
+		if (wasKilled == false)
+		currentPrisoner.SetActive(false);
 
 		// Sometimes the ratingSlider is higher, sometimes the backgroundDiffSlider is higher
 		// When resetting, just set both to the current value and color
